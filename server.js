@@ -60,14 +60,14 @@ io.on('connection', (socket) => {
 
 
         // decrease room counts
-        const room = rooms[Object.keys(socket.rooms).filter(item => item != socket.id)]
-        if (room && room.length != 0) {
-            rooms[room[0]] -= 1
+        // const room = rooms[Object.keys(socket.rooms).filter(item => item != socket.id)]
+        // if (room && room.length != 0) {
+        //     rooms[room[0]] -= 1
 
-            if (rooms[room[0]] == 0) {
-                delete rooms[Object.keys(socket.rooms).filter(item => item != socket.id)[0]]
-            }
-        }
+        //     if (rooms[room[0]] == 0) {
+        //         delete rooms[Object.keys(socket.rooms).filter(item => item != socket.id)[0]]
+        //     }
+        // }
 
         console.log('user disconnected');
     });
