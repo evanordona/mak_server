@@ -14,7 +14,7 @@ app.use(cors())
 // http://localhost:5173
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:5173',
+        origin: 'https://mak-game.onrender.com',
         methods: ['GET', 'POST'],
     }
 })
