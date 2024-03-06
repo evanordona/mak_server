@@ -14,7 +14,7 @@ app.use(cors())
 // http://localhost:5173
 const io = new Server(server, {
     cors: {
-        origin: 'https://mak-game.onrender.com',
+        origin: 'http://localhost:5173',
         methods: ['GET', 'POST'],
     }
 })
@@ -46,6 +46,29 @@ io.on('connection', (socket) => {
             }
         }
         console.log(rooms[code])
+    })
+
+    socket.on('gameOver', (code) => {
+        if (rooms[code] && rooms[code] > 0) {
+            rooms[code] -= 1
+        }
+    })
+
+    socket.on('leaveLobby', (code) => {
+        console.log("opponent left")
+        socket.to(code).emit('leave')
+    })
+
+    socket.on('rerun', (code)=> {
+        if (!rooms[code]) {
+            rooms[code] = 1
+        } else if (rooms[code] < 2) {
+            // if 2 players in room
+            rooms[code] += 1
+            if (rooms[code] == 2) {
+                io.to(code).emit('rematch')
+            }
+        }
     })
 
     socket.on('send-card', (card, code) => {
