@@ -80,18 +80,21 @@ io.on('connection', (socket) => {
 
 
     socket.on('disconnect', () => {
-
-
-        // decrease room counts
-        // const room = rooms[Object.keys(socket.rooms).filter(item => item != socket.id)]
-        // if (room && room.length != 0) {
-        //     rooms[room[0]] -= 1
-
-        //     if (rooms[room[0]] == 0) {
-        //         delete rooms[Object.keys(socket.rooms).filter(item => item != socket.id)[0]]
-        //     }
-        // }
-
+        // Find the room the user was in
+        const room = Object.keys(socket.rooms).find(room => room !== socket.id);
+        if (room) {
+            // Notify other users in the room
+            socket.to(room).emit('leave');
+    
+            // Decrease the count or remove the room if empty
+            if (rooms[room]) {
+                rooms[room] -= 1;
+                if (rooms[room] <= 0) {
+                    delete rooms[room];
+                }
+            }
+        }
+    
         console.log('user disconnected');
     });
 
